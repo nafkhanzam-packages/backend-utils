@@ -1,0 +1,49 @@
+{
+  "name": "@nafkhanzam/backend-utils",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "private": false,
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/nafkhanzam"
+  },
+  "repository": "https://github.com/nafkhanzam/backend-utils.git",
+  "author": "nafkhanzam <nafkhanalzamzami@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "yarn build",
+    "build": "tsc",
+    "generate": "ts-node generateExports"
+  },
+  "dependencies": {
+    "@nafkhanzam/common-utils": "^0.0.4",
+    "apollo-server-express": "^2.19.1",
+    "aws-sdk": "^2.822.0",
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.0",
+    "fs-extra": "^9.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1",
+    "node-gcm": "^1.0.3",
+    "nodemailer": "^6.4.17",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0",
+    "zod": "^1.11.11"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "@types/bcrypt": "^3.0.0",
+    "@types/fs-extra": "^9.0.6",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/lodash": "^4.14.167",
+    "@types/moment": "^2.13.0",
+    "@types/node-gcm": "^1.0.0",
+    "@types/nodemailer": "^6.4.0",
+    "export-generator": "^1.2.0",
+    "typescript": "^4.1.3"
+  }
+}

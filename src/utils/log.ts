@@ -1,11 +1,16 @@
 import {PluginDefinition} from "apollo-server-core";
-import {GraphQLExtension} from "apollo-server-express";
-import {GraphQLError} from "graphql";
 import path from "path";
 import {createLogger, format, transports} from "winston";
 import "winston-daily-rotate-file";
 
 export {Logger} from "winston";
+
+const colors = {
+  info: "\x1b[36m",
+  error: "\x1b[31m",
+  warn: "\x1b[33m",
+  verbose: "\x1b[43m",
+};
 
 export let log = createLogger({
   transports: [
@@ -27,7 +32,7 @@ export let log = createLogger({
     new transports.Console({
       level: "debug",
       format: format.combine(
-        format.colorize({all: true}),
+        format.colorize({all: true, colors}),
         format.timestamp({format: "HH:mm:ss"}),
         format.prettyPrint(),
         format.printf(

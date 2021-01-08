@@ -20,6 +20,7 @@ export let log = createLogger({
               info.message,
             )}`,
         ),
+        format.colorize({all: true}),
       ),
     }),
     new transports.Console({

@@ -1,6 +1,6 @@
 import {PluginDefinition} from "apollo-server-core";
 import path from "path";
-import {addColors, createLogger, format, transports} from "winston";
+import {createLogger, format, transports} from "winston";
 import "winston-daily-rotate-file";
 
 export {Logger} from "winston";
@@ -30,12 +30,6 @@ export let log = createLogger({
         format.printf(
           (info) => `[${info.timestamp} ${info.level}] ${info.message}`,
         ),
-        addColors({
-          info: "bold blue",
-          warn: "italic yellow",
-          error: "bold red",
-          debug: "green",
-        }),
       ),
     }),
   ],

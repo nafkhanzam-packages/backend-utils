@@ -4,6 +4,8 @@ import path from "path";
 import {createLogger, format, transports} from "winston";
 import "winston-daily-rotate-file";
 
+export {Logger} from "winston";
+
 export let log = createLogger({
   transports: [
     new transports.DailyRotateFile({

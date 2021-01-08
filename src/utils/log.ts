@@ -37,10 +37,10 @@ export let log = createLogger({
   ],
 });
 
-export class LogExtension extends GraphQLExtension {
+export const logExtension: GraphQLExtension = {
   didEncounterErrors(errors: GraphQLError[]) {
     for (const error of errors) {
       log.error(JSON.stringify(error) + "\n" + error.stack);
     }
-  }
-}
+  },
+};

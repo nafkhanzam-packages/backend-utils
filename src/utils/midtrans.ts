@@ -1,6 +1,5 @@
-import {validatorUtils} from "@nafkhanzam/common-utils";
+import {validatorUtils, zod} from "@nafkhanzam/common-utils";
 import axios from "axios";
-import zod from "zod";
 
 const createPaymentResponseValidator = zod
   .object({

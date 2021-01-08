@@ -1,3 +1,4 @@
+import {PluginDefinition} from "apollo-server-core";
 import {GraphQLExtension} from "apollo-server-express";
 import {GraphQLError} from "graphql";
 import path from "path";
@@ -37,10 +38,14 @@ export let log = createLogger({
   ],
 });
 
-export const logExtension: GraphQLExtension = {
-  didEncounterErrors(errors: GraphQLError[]) {
-    for (const error of errors) {
-      log.error(JSON.stringify(error) + "\n" + error.stack);
-    }
+export const logExtension: PluginDefinition = {
+  requestDidStart() {
+    return {
+      didEncounterErrors(ctx) {
+        for (const error of ctx.errors) {
+          log.error(JSON.stringify(error) + "\n" + error.stack);
+        }
+      },
+    };
   },
 };

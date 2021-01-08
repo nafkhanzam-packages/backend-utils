@@ -14,7 +14,7 @@
   "author": "nafkhanzam <nafkhanalzamzami@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepublish": "yarn build",
+    "prepublish": "yarn generate && yarn build",
     "build": "tsc",
     "generate": "ts-node generateExports"
   },

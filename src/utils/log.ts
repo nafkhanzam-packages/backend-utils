@@ -12,7 +12,6 @@ export let log = createLogger({
       filename: path.join("logs", "application-%DATE%.log"),
       datePattern: "YYYY-MM-DD",
       format: format.combine(
-        format.colorize({all: true}),
         format.timestamp({format: "HH:mm:ss"}),
         format.prettyPrint(),
         format.printf(
@@ -31,6 +30,7 @@ export let log = createLogger({
         format.printf(
           (info) => `[${info.timestamp} ${info.level}] ${info.message}`,
         ),
+        format.colorize({all: true}),
       ),
     }),
   ],

@@ -31,7 +31,7 @@ export class JWTUtils<
     return jwt;
   };
 
-  toToken = (obj: zod.infer<T>, opts?: {expiresIn?: string | number}) => {
+  toToken = (obj: zod.infer<T>, opts?: {expiresIn: string | number}) => {
     return jsonwebtoken.sign(obj, this.key, {expiresIn: opts?.expiresIn});
   };
 }

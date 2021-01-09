@@ -5,21 +5,31 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 export class EmailUtils {
   private mail: Mail;
 
-  constructor(args: {
-    host: string;
-    port: number;
-    auth: {user: string; password: string};
-  }) {
-    const options: SMTPTransport.Options = {
-      host: args.host,
-      port: args.port,
-      auth: {
-        user: args.auth.user,
-        pass: args.auth.password,
-      },
-    };
-
-    this.mail = nodemailer.createTransport(options);
+  constructor(
+    args:
+      | {
+          type: "default";
+          host: string;
+          port: number;
+          auth: {user: string; password: string};
+        }
+      | {
+          type: "SES";
+          ses: AWS.SES;
+        },
+  ) {
+    this.mail = nodemailer.createTransport(
+      args.type === "default"
+        ? ({
+            host: args.host,
+            port: args.port,
+            auth: {
+              user: args.auth.user,
+              pass: args.auth.password,
+            },
+          } as SMTPTransport.Options)
+        : ({SES: args.ses} as SMTPTransport.Options),
+    );
   }
 
   sendMail = async (args: {

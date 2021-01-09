@@ -2,7 +2,8 @@ import AWS from "aws-sdk";
 import fs from "fs-extra";
 
 export class AWSUtils {
-  private s3: AWS.S3;
+  public s3: AWS.S3;
+  public ses: AWS.SES;
   constructor(args: {
     accessKeyId: string;
     secretAccessKey: string;
@@ -15,6 +16,7 @@ export class AWSUtils {
     };
 
     this.s3 = new AWS.S3(options);
+    this.ses = new AWS.SES(options);
   }
 
   uploadS3 = async (args: {

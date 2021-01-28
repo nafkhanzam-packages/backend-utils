@@ -44,4 +44,22 @@ export class AWSUtils {
       );
     });
   };
+
+  deleteS3 = async (args: {bucket: string; key: string}) => {
+    return new Promise<void>((resolve, reject) => {
+      this.s3.deleteObject(
+        {
+          Bucket: args.bucket,
+          Key: args.key,
+        },
+        (err) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve();
+        },
+      );
+    });
+  };
 }

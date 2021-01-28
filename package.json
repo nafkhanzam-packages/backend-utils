@@ -1,6 +1,6 @@
 {
   "name": "@nafkhanzam/backend-utils",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "private": false,
@@ -16,7 +16,8 @@
   "scripts": {
     "prepublish": "yarn generate && yarn build",
     "build": "tsc",
-    "generate": "ts-node generateExports"
+    "generate": "ts-node generateExports",
+    "pub": "yarn version --patch && npm pub"
   },
   "dependencies": {
     "@nafkhanzam/common-utils": "^0.0.4",

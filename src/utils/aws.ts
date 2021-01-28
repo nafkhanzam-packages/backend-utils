@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import fs from "fs-extra";
+import fs from "fs";
 
 export class AWSUtils {
   public s3: AWS.S3;
@@ -23,6 +23,7 @@ export class AWSUtils {
     bucket: string;
     key: string;
     reader: fs.ReadStream;
+    contentType?: string;
   }) => {
     return new Promise<void>((resolve, reject) => {
       this.s3.upload(
@@ -30,6 +31,7 @@ export class AWSUtils {
           Bucket: args.bucket,
           Key: args.key,
           Body: args.reader,
+          ContentType: args.contentType,
         },
         (err) => {
           args.reader.destroy();

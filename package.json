@@ -1,6 +1,6 @@
 {
   "name": "@nafkhanzam/backend-utils",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "private": false,
@@ -19,10 +19,6 @@
     "generate": "ts-node generateExports",
     "pub": "yarn version --patch && npm pub"
   },
-  "resolutions": {
-    "**/**/fs-capacitor": "^6.2.0",
-    "**/graphql-upload": "^11.0.0"
-  },
   "dependencies": {
     "@nafkhanzam/common-utils": "^0.0.4",
     "apollo-server-core": "^2.21.2",
@@ -30,7 +26,6 @@
     "aws-sdk": "^2.822.0",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
-    "fs-capacitor": "6.2.0",
     "fs-extra": "^9.0.1",
     "graphql-upload": "^11.0.0",
     "jsonwebtoken": "^8.5.1",
@@ -41,6 +36,10 @@
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0",
     "zod": "^1.11.11"
+  },
+  "resolutions": {
+    "**/**/fs-capacitor": "^6.2.0",
+    "**/graphql-upload": "^11.0.0"
   },
   "devDependencies": {
     "@types/aws-sdk": "^2.7.0",

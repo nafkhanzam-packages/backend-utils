@@ -1,10 +1,9 @@
-import {validatorUtils} from "@nafkhanzam/common-utils";
+import {validatorUtils, zod} from "@nafkhanzam/common-utils";
 import jsonwebtoken from "jsonwebtoken";
-import zod, {ZodTypeDef} from "zod";
 
 export class JWTUtils<
   A extends object,
-  B extends ZodTypeDef,
+  B extends zod.ZodTypeDef,
   T extends zod.ZodType<A, B>
 > {
   constructor(private validator: T, private key: string) {}
@@ -37,3 +36,12 @@ export class JWTUtils<
     });
   };
 }
+
+const accessTokenJWTValidator = zod
+  .object({
+    serial: zod.string(),
+    role: zod.enum(["A"]).optional(),
+  })
+  .nonstrict();
+
+new JWTUtils(accessTokenJWTValidator, "test");

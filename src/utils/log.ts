@@ -45,15 +45,6 @@ process.on("unhandledRejection", (err) => {
   throw err;
 });
 
-// (async () => {
-//   throw new Error("Error message async!");
-// })();
-
-// (() => {
-//   log.info("info with meta", {yow: "the metas", arr: [1, 2, "test"]});
-//   throw new Error("Error message sync!");
-// })();
-
 export const logExtension: PluginDefinition = {
   requestDidStart() {
     return {

@@ -1,4 +1,4 @@
-import fs from "fs-extra";
+import fs, {ReadStream} from "fs-extra";
 import path from "path";
 import {Transform} from "stream";
 import {FileUpload} from "graphql-upload";
@@ -7,26 +7,17 @@ const deleteFile = async (filePath: string) => {
   await fs.remove(filePath);
 };
 
-type UploadType = {
-  file?: FileUpload;
-  promise: Promise<FileUpload>;
-};
-
-const convertGQLToUploadType = (gqlFile: UploadType) => {
-  return gqlFile.file ?? gqlFile.promise;
-};
-
 const uploadFile = async (
-  filePromise: Promise<FileUpload> | FileUpload,
+  file: FileUpload,
   filePath: string,
   options?: {
     maxByteSize?: number;
     acceptedExtension?: string[];
     acceptedMimetypes?: string[];
     forceReplace?: boolean;
+    readStream?: ReadStream;
   },
 ): Promise<void> => {
-  const file = await filePromise;
   const parsed = path.parse(filePath);
   if ((await fs.pathExists(filePath)) && !options?.forceReplace) {
     throw new Error(`File ${filePath} already exists!`);
@@ -46,21 +37,20 @@ const uploadFile = async (
     );
   }
   const writer = fs.createWriteStream(filePath);
-  const reader = file.createReadStream();
+  const reader = options?.readStream ?? file.createReadStream();
   try {
     await sendBytes(writer, reader, options?.maxByteSize);
   } catch (error) {
     await deleteFile(filePath);
     throw error;
   } finally {
-    writer.close();
-    reader.close();
+    writer.close?.();
+    reader.close?.();
   }
 };
 
 export const uploadUtils = {
   deleteFile,
-  convertGQLToUploadType,
   uploadFile,
 };
 

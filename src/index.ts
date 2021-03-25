@@ -6,5 +6,6 @@ export * from "./utils/hash";
 export * from "./utils/jwt";
 export * from "./utils/log";
 export * from "./utils/midtrans";
+export * from "./utils/public-files";
 export * from "./utils/sql";
 export * from "./utils/upload";

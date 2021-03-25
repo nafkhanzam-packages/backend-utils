@@ -7,3 +7,4 @@ export * from "./utils/jwt";
 export * from "./utils/log";
 export * from "./utils/midtrans";
 export * from "./utils/sql";
+export * from "./utils/upload";

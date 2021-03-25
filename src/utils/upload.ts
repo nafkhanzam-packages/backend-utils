@@ -25,6 +25,7 @@ const uploadFile = async (
   options?: {
     maxByteSize?: number;
     acceptedExtension?: string[];
+    acceptedMimetypes?: string[];
     forceReplace?: boolean;
   },
 ): Promise<void> => {
@@ -35,10 +36,16 @@ const uploadFile = async (
   }
   await fs.ensureDir(parsed.dir);
   const {ext} = path.parse(file.filename);
-  const exts = options?.acceptedExtension;
-  if (exts && exts.length && !exts.includes(ext.substr(1))) {
+  const accExts = options?.acceptedExtension;
+  if (accExts && accExts.length && !accExts.includes(ext.substr(1))) {
     throw new Error(
-      `File extension must be one of the following: [${exts.join(", ")}].`,
+      `File extension must be one of the following: [${accExts.join(", ")}].`,
+    );
+  }
+  const accMimes = options?.acceptedMimetypes;
+  if (accMimes && accMimes.length && !accMimes.includes(file.mimetype)) {
+    throw new Error(
+      `File mimetypes must be one of the following: [${accMimes.join(", ")}].`,
     );
   }
   const writer = fs.createWriteStream(filePath);

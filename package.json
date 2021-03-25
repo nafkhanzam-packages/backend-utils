@@ -1,6 +1,6 @@
 {
   "name": "@nafkhanzam/backend-utils",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "private": false,
@@ -18,6 +18,10 @@
     "build": "tsc",
     "generate": "ts-node generateExports",
     "pub": "yarn version --patch && npm pub"
+  },
+  "resolutions": {
+    "**/**/fs-capacitor": "^6.2.0",
+    "**/graphql-upload": "^11.0.0"
   },
   "dependencies": {
     "@nafkhanzam/common-utils": "^0.0.4",

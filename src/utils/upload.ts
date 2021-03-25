@@ -7,20 +7,17 @@ const deleteFile = async (filePath: string) => {
   await fs.remove(filePath);
 };
 
-type UploadType =
-  | {
-      file: FileUpload;
-      promise: Promise<FileUpload>;
-    }
-  | FileUpload
-  | Promise<FileUpload>;
+type UploadType = {
+  file?: FileUpload;
+  promise: Promise<FileUpload>;
+};
 
 const convertGQLToUploadType = (gqlFile: UploadType) => {
-  return "file" in gqlFile ? gqlFile.file || gqlFile.promise : gqlFile;
+  return gqlFile.file ?? gqlFile.promise;
 };
 
 const uploadFile = async (
-  filePromise: Promise<FileUpload>,
+  filePromise: Promise<FileUpload> | FileUpload,
   filePath: string,
   options?: {
     maxByteSize?: number;

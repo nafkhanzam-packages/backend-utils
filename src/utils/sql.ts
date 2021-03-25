@@ -1,8 +1,8 @@
 export const distanceSql = (
-  latCol: string,
-  lonCol: string,
-  latVar: string,
-  lonVar: string,
+  latCol: number,
+  lonCol: number,
+  latVar: number,
+  lonVar: number,
 ) => /*sql*/ `
   6371 * 2 * ASIN(SQRT(
   POWER(SIN((${latCol} - abs(${latVar})) * pi()/180 / 2), 2)

@@ -1,6 +1,6 @@
 {
   "name": "@nafkhanzam/backend-utils",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "private": false,
@@ -20,7 +20,7 @@
     "pub": "yarn version --patch && npm pub"
   },
   "dependencies": {
-    "@nafkhanzam/common-utils": "^0.0.4",
+    "@nafkhanzam/common-utils": "^0.0.39",
     "apollo-server-core": "^2.21.2",
     "apollo-server-express": "^2.21.2",
     "aws-sdk": "^2.822.0",

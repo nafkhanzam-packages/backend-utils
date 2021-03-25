@@ -23,17 +23,22 @@ const uploadFile = async (
     throw new Error(`File ${filePath} already exists!`);
   }
   await fs.ensureDir(parsed.dir);
-  const {ext} = path.parse(file.filename);
+  let {ext} = path.parse(file.filename);
+  ext = ext.substr(1);
   const accExts = options?.acceptedExtension;
-  if (accExts && accExts.length && !accExts.includes(ext.substr(1))) {
+  if (accExts && accExts.length && !accExts.includes(ext)) {
     throw new Error(
-      `File extension must be one of the following: [${accExts.join(", ")}].`,
+      `File extension must be one of the following: [${accExts.join(
+        ", ",
+      )}]. Instead received ${ext}.`,
     );
   }
   const accMimes = options?.acceptedMimetypes;
   if (accMimes && accMimes.length && !accMimes.includes(file.mimetype)) {
     throw new Error(
-      `File mimetypes must be one of the following: [${accMimes.join(", ")}].`,
+      `File mimetypes must be one of the following: [${accMimes.join(
+        ", ",
+      )}]. Instead received ${file.mimetype}.`,
     );
   }
   const writer = fs.createWriteStream(filePath);

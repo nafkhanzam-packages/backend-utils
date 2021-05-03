@@ -36,11 +36,10 @@ export class JWTUtils<
     });
   };
 }
-
-const accessTokenJWTValidator = zod
+export const accessTokenJWTValidator = zod
   .object({
     serial: zod.string(),
-    role: zod.enum(["A"]).optional(),
+    role: zod.enum(["TEST", "TEST2"]).optional(),
   })
   .nonstrict();
 

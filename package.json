@@ -1,15 +1,12 @@
 {
   "name": "@nafkhanzam/backend-utils",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "private": false,
   "files": [
     "lib"
   ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/nafkhanzam"
-  },
   "repository": "https://github.com/nafkhanzam/backend-utils.git",
   "author": "nafkhanzam <nafkhanalzamzami@gmail.com>",
   "license": "MIT",

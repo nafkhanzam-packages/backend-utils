@@ -1,4 +1,3 @@
-import {PluginDefinition} from "apollo-server-core";
 import path from "path";
 import {createLogger, format, transports} from "winston";
 import "winston-daily-rotate-file";
@@ -36,23 +35,17 @@ const consoleTransport = new transports.Console({
   ),
 });
 
+const dailyLog = createLogger({
+  exitOnError: false,
+  transports: [dailyTransport],
+});
+
 export let log = createLogger({
   exitOnError: false,
   transports: [dailyTransport, consoleTransport],
 });
 
 process.on("unhandledRejection", (err) => {
+  dailyLog.error(err);
   throw err;
 });
-
-export const logExtension: PluginDefinition = {
-  requestDidStart() {
-    return {
-      didEncounterErrors(ctx) {
-        for (const error of ctx.errors) {
-          log.error(JSON.stringify(error) + "\n" + error.stack);
-        }
-      },
-    };
-  },
-};

@@ -1,65 +1,108 @@
-import AWS from "aws-sdk";
-import fs from "fs";
+import {GetObjectCommand, PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
+import {getSignedUrl} from "@aws-sdk/s3-request-presigner";
+import memoizee from "memoizee";
 
-export class AWSUtils {
-  public s3: AWS.S3;
-  public ses: AWS.SES;
+type MemoizeFn = (path: string) => Promise<string>;
+type MemoizeType = memoizee.Memoized<MemoizeFn> & MemoizeFn;
+
+export class S3Utils {
+  bucketName: string;
+  s3: S3Client;
+  expiresInSeconds: number = 3600;
+  memoizedDownloadUrl: MemoizeType;
+  memoizedUploadUrl: MemoizeType;
   constructor(args: {
     accessKeyId: string;
     secretAccessKey: string;
-    region: string;
+    bucket: string;
+    endpoint?: string;
+    region?: string;
   }) {
-    const options: AWS.S3.ClientConfiguration = {
-      accessKeyId: args.accessKeyId,
-      secretAccessKey: args.secretAccessKey,
+    this.s3 = new S3Client({
+      endpoint: args.endpoint,
       region: args.region,
-    };
+      credentials: {
+        accessKeyId: args.accessKeyId,
+        secretAccessKey: args.secretAccessKey,
+      },
+    });
+    this.bucketName = args.bucket;
 
-    this.s3 = new AWS.S3(options);
-    this.ses = new AWS.SES(options);
+    const maxAge = ((this.expiresInSeconds * 2) / 3) * 1000;
+    this.memoizedDownloadUrl = memoizee(
+      async (path: string) => {
+        const res = await this.createSignedDownloadUrl(path, undefined, true);
+        return res;
+      },
+      {async: true, maxAge},
+    );
+    this.memoizedUploadUrl = memoizee(
+      async (path: string) => {
+        const res = await this.createSignedUploadUrl(path, undefined, true);
+        return res;
+      },
+      {async: true, maxAge},
+    );
   }
 
-  uploadS3 = async (args: {
-    bucket: string;
-    key: string;
-    reader: fs.ReadStream;
-    contentType?: string;
-  }) => {
-    return new Promise<void>((resolve, reject) => {
-      this.s3.upload(
-        {
-          Bucket: args.bucket,
-          Key: args.key,
-          Body: args.reader,
-          ContentType: args.contentType,
-        },
-        (err) => {
-          args.reader.destroy();
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve();
-        },
-      );
+  async upload(path: string, buf: Buffer): Promise<void> {
+    const uploader = new PutObjectCommand({
+      Bucket: this.bucketName,
+      Key: path,
+      Body: buf,
     });
-  };
 
-  deleteS3 = async (args: {bucket: string; key: string}) => {
-    return new Promise<void>((resolve, reject) => {
-      this.s3.deleteObject(
-        {
-          Bucket: args.bucket,
-          Key: args.key,
-        },
-        (err) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve();
-        },
-      );
+    await this.s3.send(uploader);
+  }
+
+  async createSignedUploadUrl(
+    path: string,
+    options?: {
+      contentLength?: number;
+    },
+    force = false,
+  ): Promise<string> {
+    if (!force) {
+      return this.memoizedUploadUrl(path);
+    }
+    const uploader = new PutObjectCommand({
+      Bucket: this.bucketName,
+      Key: path,
+      ContentLength: options?.contentLength,
     });
-  };
+
+    const url = await getSignedUrl(this.s3, uploader, {
+      expiresIn: this.expiresInSeconds,
+    });
+    return url;
+  }
+
+  async download(path: string) {
+    const downloader = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: path,
+    });
+
+    const res = await this.s3.send(downloader);
+    return res.Body;
+  }
+
+  async createSignedDownloadUrl(
+    path: string,
+    options?: {},
+    force = false,
+  ): Promise<string> {
+    if (!force) {
+      return this.memoizedDownloadUrl(path);
+    }
+    const downloader = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: path,
+    });
+
+    const url = await getSignedUrl(this.s3, downloader, {
+      expiresIn: this.expiresInSeconds,
+    });
+    return url;
+  }
 }

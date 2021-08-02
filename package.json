@@ -1,6 +1,6 @@
 {
   "name": "@nafkhanzam/backend-utils",
-  "version": "0.0.48",
+  "version": "0.0.49",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "private": false,
@@ -11,6 +11,7 @@
   "author": "nafkhanzam <nafkhanalzamzami@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "prepublish": "yarn generate && yarn build",
     "build": "tsc",
     "generate": "ts-node generateExports",
     "patch": "yarn version --patch"

@@ -1,6 +1,6 @@
 {
   "name": "@nafkhanzam/backend-utils",
-  "version": "0.0.52",
+  "version": "0.0.53",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "private": false,
@@ -19,7 +19,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.24.0",
     "@aws-sdk/s3-request-presigner": "^3.24.0",
-    "@nafkhanzam/common-utils": "^0.0.57",
+    "@nafkhanzam/common-utils": "^0.0.58",
     "apollo-server-core": "^3.0.1",
     "apollo-server-express": "^3.0.1",
     "axios": "^0.21.1",

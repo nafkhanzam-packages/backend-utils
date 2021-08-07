@@ -1,6 +1,7 @@
 export * from "./utils/aws";
 export * from "./utils/email";
 export * from "./utils/error";
+export * from "./utils/exports";
 export * from "./utils/fcm";
 export * from "./utils/hash";
 export * from "./utils/jwt";

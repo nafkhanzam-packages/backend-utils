@@ -1,18 +1,14 @@
 import {validatorUtils, zod} from "@nafkhanzam/common-utils";
 import jsonwebtoken from "jsonwebtoken";
 
-export class JWTUtils<
-  A extends object,
-  B extends zod.ZodTypeDef,
-  T extends zod.ZodType<A, B>
-> {
-  constructor(private validator: T, private key: string) {}
+export class JWTUtils<V extends zod.AnyZodObject> {
+  constructor(private validator: V, private key: string) {}
 
-  decryptToken = (token: string): zod.infer<T> => {
+  decryptToken = (token: string): zod.infer<V> => {
     return this.toJWTObject(jsonwebtoken.verify(token, this.key));
   };
 
-  toJWTObject = (jwtObj: string | object | null): zod.infer<T> => {
+  toJWTObject = (jwtObj: string | object | null): zod.infer<V> => {
     if (typeof jwtObj === "string") {
       return this.decryptToken(jwtObj);
     }
@@ -20,7 +16,7 @@ export class JWTUtils<
   };
 
   headerToJwtObj = (headerValue?: string) => {
-    let jwt: zod.infer<T> | null = null;
+    let jwt: zod.infer<V> | null = null;
     const token = headerValue?.replace("Bearer ", "");
     if (token) {
       try {
@@ -30,17 +26,9 @@ export class JWTUtils<
     return jwt;
   };
 
-  toToken = (obj: zod.infer<T>, opts?: {expiresIn: string | number}) => {
+  toToken = (obj: zod.infer<V>, opts?: {expiresIn: string | number}) => {
     return jsonwebtoken.sign(obj, this.key, {
       ...(opts?.expiresIn ? {expiresIn: opts.expiresIn} : {}),
     });
   };
 }
-export const accessTokenJWTValidator = zod
-  .object({
-    serial: zod.string(),
-    role: zod.enum(["TEST", "TEST2"]).optional(),
-  })
-  .nonstrict();
-
-new JWTUtils(accessTokenJWTValidator, "test");

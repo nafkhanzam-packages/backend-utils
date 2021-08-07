@@ -1,1 +1,1 @@
-export {zod} from "@nafkhanzam/common-utils";
+export {zod, ErrorStatus, ErrorDetail} from "@nafkhanzam/common-utils";

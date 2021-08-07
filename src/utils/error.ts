@@ -7,6 +7,7 @@ import {
 import {GraphQLError, GraphQLFormattedError} from "graphql";
 import {ApolloError} from "apollo-server-express";
 import _ from "lodash";
+import {Logger} from "./log";
 
 export const gqlerr = {
   createGQLError: (
@@ -85,7 +86,13 @@ export const gqlErrorExtensionFormatters: Record<
   },
 };
 
-export const formatGQLError = (rawErr: GraphQLError): GraphQLFormattedError => {
+export const formatGQLError = (
+  rawErr: GraphQLError,
+  opts?: {
+    appendOriginalToOutput?: boolean;
+    logger?: Logger;
+  },
+): GraphQLFormattedError => {
   const orig = rawErr.originalError;
   if (orig instanceof GraphQLError || orig instanceof ApolloError) {
     return rawErr;
@@ -101,6 +108,11 @@ export const formatGQLError = (rawErr: GraphQLError): GraphQLFormattedError => {
     extensions = {
       code: ErrorStatus.INTERNAL_SERVER_ERROR,
     };
+    if (opts?.appendOriginalToOutput) {
+      extensions.exception = orig ?? undefined;
+    }
+    opts?.logger?.error(rawErr);
+    opts?.logger?.error(orig);
   }
   const message =
     extensions.message ?? extensions.code ?? ErrorStatus.INTERNAL_SERVER_ERROR;
